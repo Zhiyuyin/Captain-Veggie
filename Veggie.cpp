@@ -2,10 +2,12 @@
 // implementation of Veggie class
 
 #include "Veggie.h"
+
+#include <utility>
 #include "FieldInhabitant.h"
 
-Veggie::Veggie(const string &Symbol_, const string &Name_, const int Point_)
-        : FieldInhabitant(Symbol_), veggieName(Name_), veggiePoint(Point_) {};
+Veggie::Veggie(const string &Symbol_, string Name_, const int Point_)
+        : FieldInhabitant(Symbol_), veggieName(std::move(Name_)), veggiePoint(Point_) {}
 
 void Veggie::setVeggieName(const string &name) { veggieName = name; }
 

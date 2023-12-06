@@ -14,11 +14,11 @@ private:
     int veggiePoint;
 
 public:
-    Veggie(const string &, const string &, const int);
+    Veggie(const string &, string , int);
 
     void setVeggieName(const string &);
 
-    void setVeggiePoint(const int);
+    void setVeggiePoint(int);
 
     const string &getVeggieName() const;
 
