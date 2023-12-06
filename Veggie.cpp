@@ -4,9 +4,6 @@
 #include "Veggie.h"
 #include "FieldInhabitant.h"
 
-#include <ostream>
-#include <string>
-
 Veggie::Veggie(const string &Symbol_, const string &Name_, const int Point_)
         : FieldInhabitant(Symbol_), veggieName(Name_), veggiePoint(Point_) {};
 
