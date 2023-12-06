@@ -3,9 +3,11 @@
 
 #include "FieldInhabitant.h"
 
-FieldInhabitant::FieldInhabitant(const string &Symbol) : symbol(Symbol){};
+#include <utility>
 
-FieldInhabitant::~FieldInhabitant(){};
+FieldInhabitant::FieldInhabitant(string Symbol) : symbol(std::move(Symbol)){};
+
+FieldInhabitant::~FieldInhabitant()= default;
 
 const string &FieldInhabitant::GetSymbol() const { return symbol; }
 

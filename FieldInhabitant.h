@@ -12,7 +12,7 @@ protected:
   string symbol;
 
 public:
-  FieldInhabitant(const string &);
+  FieldInhabitant(string );
   virtual ~FieldInhabitant();
 
   const string &GetSymbol() const;
