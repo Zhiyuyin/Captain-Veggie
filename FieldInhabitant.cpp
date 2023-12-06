@@ -1,5 +1,7 @@
+// Zhiyu Yin, 12/6/2023
+// implementations of FieldInhabitant member functions
+
 #include "FieldInhabitant.h"
-#include <string>
 
 FieldInhabitant::FieldInhabitant(const string &Symbol) : symbol(Symbol){};
 

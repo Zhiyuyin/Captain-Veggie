@@ -1,3 +1,6 @@
+// Zhiyu Yin, 12/6/2023
+// declarations of FieldInhabitant class
+
 #pragma once
 
 #include <string>
