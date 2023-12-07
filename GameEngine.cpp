@@ -100,7 +100,7 @@ void GameEngine::initVeggies() {
                 }
             }
             // no need to close because we use RAII(ifstream file(filename)).
-            break;;
+            break;
         }
     }
 }
@@ -143,4 +143,36 @@ int GameEngine::remainingVeggies() {
     }
     return num;
 }
+
+void GameEngine::intro() {
+    cout << "Welcome to Captain Veggie!\n"
+         << "The rabbits have invaded your garden and you must harvest as \n"
+            "many vegetables as possible before the rabbits eat them all! \n"
+            "Each vegetable is worth a different number of points so go for \n"
+            "the high score!\n\n"
+         << "The vegetables are:\n";
+
+    for (Veggie *thisVeggie: gameVeggies) {
+        // overloaded << before, here we can print the info conveniently
+        cout << *thisVeggie;
+    }
+}
+
+void GameEngine::printField() {
+    cout << "\n";
+    for (int i = 0; i < height; ++i) {
+        cout << "\n";
+        for (int j = 0; j < width; ++j) {
+            if (gameField[i][j] == nullptr) {
+                cout << "   ";
+            } else {
+                cout << " " << gameField[i][j]->GetSymbol() << " ";
+            }
+        }
+    }
+    cout << "\n";
+}
+
+int GameEngine::getScore() const { return score; }
+
 
