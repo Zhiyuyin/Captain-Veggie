@@ -57,4 +57,7 @@ public:
     int getScore() const;
 
     int remainingVeggies();
+
+    // dtor
+    ~GameEngine();
 };

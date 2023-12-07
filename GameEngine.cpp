@@ -297,3 +297,23 @@ void GameEngine::moveCaptain() {
         cout << input << " is not a valid option.";
     }
 }
+
+GameEngine::~GameEngine() {
+    // analysis of objects be deallocated
+    // 1. All the objects on the field(Veggie, Captain, Rabbits)
+    // 2. For Veggies, if they are eaten by rabbits, we have freed it
+    //                 if they are eaten by captain, we need to find it in Captain's vector
+
+    for (auto thisVeggie: gameCaptain->getVeggies()) {
+        delete thisVeggie;
+    }
+
+
+    for (int i = 0; i < height; ++i) {
+        for (int j = 0; j < width; ++j) {
+            delete gameField[i][j];
+        }
+        delete[] gameField[i];
+    }
+    delete[] gameField;
+}
