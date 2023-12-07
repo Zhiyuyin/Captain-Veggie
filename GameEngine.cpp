@@ -12,6 +12,7 @@
 #include <random>
 #include <sstream>
 #include <string>
+#include <cctype>
 
 using namespace std;
 
@@ -40,7 +41,6 @@ void GameEngine::initVeggies() {
             cout << "\n" << filename << "does not exist! ";
         } else {
             // successfully find the file
-
             string line;
 
             // Read the first line for field size
@@ -175,4 +175,125 @@ void GameEngine::printField() {
 
 int GameEngine::getScore() const { return score; }
 
+void GameEngine::moveRabbits() {
+    for (auto thisRabbit: gameRabbits) {
+//        cout << *thisRabbit; // for test
 
+        int moveX = sample(-1, 1);
+        int moveY = sample(-1, 1);
+
+        // new location
+        int newX = thisRabbit->getX() + moveX;
+        int newY = thisRabbit->getY() + moveY;
+
+        // check if out of bounds
+        if ((newX <= (height - 1) && newX >= 0) && (newY <= (width - 1) && newY >= 0)) {
+            // check if move to a veggie
+            auto *isVeggie = dynamic_cast<Veggie *>(gameField[newX][newY]);
+            if (isVeggie != nullptr || gameField[newX][newY] == nullptr) {
+                // free the memory of that veggie
+                delete gameField[newX][newY];
+                // change the location of fields
+                gameField[thisRabbit->getX()][thisRabbit->getY()] = nullptr; // old
+                gameField[newX][newY] = thisRabbit; // new
+                // update this Rabbit's info
+                thisRabbit->setX(newX);
+                thisRabbit->setY(newY);
+            }
+        }
+//        cout << "new " << *thisRabbit; // for test
+    }
+}
+
+void GameEngine::moveCptVertical(int move) {
+    int newX = gameCaptain->getX() + move;
+    int x = gameCaptain->getX();
+    int y = gameCaptain->getY();
+    // check if in the field
+    if (newX <= (height - 1) && newX >= 0) {
+        auto *testVeggie = dynamic_cast<Veggie *>(gameField[newX][y]);
+        auto *testRabbit = dynamic_cast<Rabbit *>(gameField[newX][y]);
+
+        if (gameField[newX][y] == nullptr) {
+            // is empty
+            gameField[x][y] = nullptr;
+            gameField[newX][y] = gameCaptain;
+            gameCaptain->setX(newX);
+        } else if (testVeggie != nullptr) {
+            // is vegetable
+            gameField[x][y] = nullptr;
+            gameField[newX][y] = gameCaptain;
+            gameCaptain->setX(newX);
+            cout << "Yummy! A delicious " << testVeggie->getVeggieName() << "\n";
+            gameCaptain->addVeggies(testVeggie);
+            score += testVeggie->getVeggiePoint();
+        } else if (testRabbit != nullptr) {
+            // is rabbit
+            cout << "Don't step on the bunnies!\n";
+        }
+    } else {
+        // out of bounds
+        cout << "You can't move that way!\n";
+    }
+}
+
+void GameEngine::moveCptHorizontal(int move) {
+    int newY = gameCaptain->getY() + move;
+    int x = gameCaptain->getX();
+    int y = gameCaptain->getY();
+    // check if in the field
+    if (newY <= (width - 1) && newY >= 0) {
+        auto *testVeggie = dynamic_cast<Veggie *>(gameField[x][newY]);
+        auto *testRabbit = dynamic_cast<Rabbit *>(gameField[x][newY]);
+
+        if (gameField[x][newY] == nullptr) {
+            // is empty
+            gameField[x][y] = nullptr;
+            gameField[x][newY] = gameCaptain;
+            gameCaptain->setY(newY);
+        } else if (testVeggie != nullptr) {
+            // is vegetable
+            gameField[x][y] = nullptr;
+            gameField[x][newY] = gameCaptain;
+            gameCaptain->setY(newY);
+            cout << "Yummy! A delicious " << testVeggie->getVeggieName() << "\n";
+            gameCaptain->addVeggies(testVeggie);
+            score += testVeggie->getVeggiePoint();
+        } else if (testRabbit != nullptr) {
+            // is rabbit
+            cout << "Don't step on the bunnies!\n";
+        }
+    } else {
+        // out of bounds
+        cout << "You can't move that way!\n";
+    }
+}
+
+void GameEngine::moveCaptain() {
+    cout << "Would you like to move up(W), down(S), left(A), or right(D):left ";
+    string input;
+    cin >> input;
+    if (input.length() == 1) {
+        char direction = tolower(input[0]); // function in cctype lib
+        cout << "\n";
+        switch (direction) {
+            case 'w':
+                moveCptVertical(-1);
+                break;
+            case 's':
+                moveCptVertical(1);
+                break;
+            case 'a':
+                moveCptHorizontal(-1);
+                break;
+            case 'd':
+                moveCptHorizontal(1);
+                break;
+            default:
+                cout << direction << " is not a valid option.\n";
+                break;
+        }
+    } else {
+        cout << input << " is not a valid option.";
+    }
+}
